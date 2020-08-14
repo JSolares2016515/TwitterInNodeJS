@@ -7,7 +7,9 @@ const Schema = Mongoose.Schema
 const tweetSchema = Schema({
     text: String,
     date: Date,
-    user: {type:Schema.Types.ObjectId, ref:'user'}
+    user: {type:Schema.Types.ObjectId, ref:'user'},
+    retweetof: {type:Schema.Types.ObjectId, ref:'tweet'},
+    likes: [{type:Schema.Types.ObjectId, ref:'user'}]
 })
 
 module.exports = Mongoose.model('tweet', tweetSchema)

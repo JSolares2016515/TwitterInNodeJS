@@ -13,6 +13,10 @@ const {
     deleteTweet,
     editTweet,
     viewTweets,
+    likeTweet,
+    dislikeTweet,
+    retweet,
+    replyTweet,
 } = require('../controllers/tweet.controller')
 
 const commandSelection = async (req, res) => {
@@ -122,6 +126,56 @@ const commandSelection = async (req, res) => {
             if (commandLine.length === 2) {
                 req.body.username = commandLine[1]
                 await viewTweets(req, res)
+            } else {
+                res.status(400).send({
+                    message: 'Ingrese los datos solicitados',
+                })
+            }
+            break
+        case 'LIKE_TWEET':
+            if (commandLine.length === 2) {
+                req.body.idTweet = commandLine[1]
+                await likeTweet(req, res)
+            } else {
+                res.status(400).send({
+                    message: 'Ingrese los datos solicitados',
+                })
+            }
+            break
+        case 'DISLIKE_TWEET':
+            if (commandLine.length === 2) {
+                req.body.idTweet = commandLine[1]
+                await dislikeTweet(req, res)
+            } else {
+                res.status(400).send({
+                    message: 'Ingrese los datos solicitados',
+                })
+            }
+            break
+        case 'REPLY_TWEET':
+            if (commandLine.length > 2) {
+                let tweetText = []
+                for (let i = 2; i < commandLine.length; i++) {
+                    tweetText.push(commandLine[i])
+                }
+                req.body.idTweet = commandLine[1]
+                req.body.text = tweetText.join(' ')
+                await replyTweet(req, res)
+            } else {
+                res.status(400).send({
+                    message: 'Ingrese los datos solicitados',
+                })
+            }
+            break
+        case 'RETWEET':
+            if (commandLine.length > 1) {
+                let tweetText = []
+                for (let i = 2; i < commandLine.length; i++) {
+                    tweetText.push(commandLine[i])
+                }
+                req.body.idTweet = commandLine[1]
+                req.body.text = tweetText.join(' ')
+                await retweet(req, res)
             } else {
                 res.status(400).send({
                     message: 'Ingrese los datos solicitados',
